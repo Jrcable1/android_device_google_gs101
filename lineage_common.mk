@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+PRODUCT_USE_SCUDO := true
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += device/google/gs101/overlay-lineage
 
@@ -23,8 +25,11 @@ PRODUCT_PRODUCT_PROPERTIES += ro.opa.eligible_device=true
 PRODUCT_PACKAGES += \
     EuiccSupportPixelOverlay
 
-# Lineage Health
-include hardware/google/pixel/lineage_health/device.mk
+ifneq ($(BOARD_WITHOUT_RADIO),true)
+# product permissions XML from stock
+PRODUCT_COPY_FILES += \
+    device/google/gs101/product-permissions-stock.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/product-permissions-stock.xml
+endif
 
 # Linker config
 PRODUCT_VENDOR_LINKER_CONFIG_FRAGMENTS += \
